@@ -1,0 +1,95 @@
+#include <fstream>
+#include <vector>
+#include <map>
+
+using namespace std;
+
+map<int, int> etc;
+vector<int> cuf;
+int c, n, x, r;
+int p[100];
+
+void ciur(){
+    for(int i = 2; i <= 99; i ++){
+        if(p[i] == 0){
+            for(int j = 2; i * j <= 99; j ++){
+                p[i * j] = 1;
+            }
+        }
+    }
+}
+
+int main()
+{
+    ifstream cin("cufere.in");
+    ofstream cout("cufere.out");
+    
+    cin >> c >> n;
+    ciur();
+    
+    if(c == 1){
+        for(int i = 1; i <= 27 * n; i ++){
+            cin >> x;
+            etc[x % 100] += (x / 100 % 100);
+        }
+        
+        for(int i = 0; i <= 99; i ++){
+            if(etc[i] != 0){
+                cout << i << ' ' << etc[i] << '\n';
+            }
+        }
+    }
+    else{
+        for(int i = 1; i <= 27 * n; i ++){
+            cin >> x;
+            etc[x % 100] += (x / 100 % 100);
+        }
+        
+        for(int i = 0; i <= 99; i ++){
+            if(etc[i] != 0){
+                if(p[i] == 0){
+                    while(etc[i] > 16){
+                        r ++;
+                        cout << 16 << i << ' ';
+                        etc[i] -= 16;
+                        
+                        if(r % 9 == 0){
+                            cout << '\n';
+                        }
+                    }
+                    
+                    cout << etc[i] << i << ' ';
+                    r ++;
+                    if(r % 9 == 0){
+                        cout << '\n';
+                    }
+                }
+                else{
+                    while(etc[i] > 64){
+                        cout << 64 << i << ' ';
+                        r ++;
+                        if(r % 9 == 0){
+                            cout << '\n';
+                        }
+                        etc[i] -= 64;
+                    }
+                    
+                    cout << etc[i] << i << ' ';
+                    r ++;
+                    if(r % 9 == 0){
+                        cout << '\n';
+                    }
+                }
+            }
+        }
+        
+        for(int i = r; i < 27 * n; i ++){
+            if(i % 9 == 0){
+                cout << '\n';
+            }
+            cout << 0 << ' ';
+        }
+    }
+
+    return 0;
+}
